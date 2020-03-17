@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
+import Context from "../../hoc/context";
 
 const styles = {
     li: {
         display: 'flex',
-        justifyContent: 'space-berween',
+        justifyContent: 'space-between',
         alignItems: 'center',
         padding: '.5rem 1rem',
         border: '1px solid #ccc',
@@ -17,6 +18,7 @@ const styles = {
 }
 
 function TodoItem({todo, index, onChange}) {
+    const {removeTodo } = useContext(Context)
 
     const classes = []
     if (todo.completed) {
@@ -25,7 +27,7 @@ function TodoItem({todo, index, onChange}) {
     return (
         <li style={styles.li}>
             <span className={classes.join(' ')}>
-                <input style={styles.input} type="checkbox" onChange={() => {
+                <input checked={todo.completed} style={styles.input} type="checkbox" onChange={() => {
                     onChange(todo.id)
                 }} />
                  <strong>{index + 1}</strong>
@@ -33,7 +35,9 @@ function TodoItem({todo, index, onChange}) {
                 {todo.title}
             </span>
 
-            <button className='rm'>&times;</button>
+            <button className='rm' onClick={() => {
+                removeTodo(todo.id)
+            }}>&times;</button>
         </li>
     )
 }
